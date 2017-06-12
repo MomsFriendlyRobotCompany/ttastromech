@@ -10,6 +10,7 @@ from subprocess import Popen
 import time
 import random
 import string
+import platform
 
 
 def print_info(f):
@@ -26,6 +27,21 @@ class TTAstromech(object):
 			"l", "m", "n", "o", "o1", "p", "q", "r", "s", "s1", "t", "u", "u1",
 			"v", "w", "x", "y", "z"
 		]
+
+		plat = platform.system()
+		if plat == 'Darwin':
+			self.audio_player = 'afplay'
+
+		elif plat == 'Linux':
+			# self.audio_player = 'play'
+			for play in ['play', 'aplay']:
+				ret = os.system('which {}'.format(play))
+				if ret == 0:
+					self.audio_player = play
+					break
+
+		else:
+			raise Exception('OS is unsupported')
 
 		self.db = {}
 		for key in letters:
@@ -52,7 +68,6 @@ class TTAstromech(object):
 			word = self.getnrandom()
 			print('phrase:', word)
 			self.speak(word)
-			time.sleep(3)
 
 	def getnrandom(self, n=6):
 		char_set = string.ascii_lowercase
@@ -98,4 +113,4 @@ class TTAstromech(object):
 		# -q quiet output
 		# -V1 only print failure messages
 		# os.system('play -q -V1 out.wav')
-		Popen('play -q -V1 out.wav', shell=True).wait()
+		Popen('{} -q -V1 out.wav'.format(self.audio_player), shell=True).wait()

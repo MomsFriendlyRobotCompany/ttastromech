@@ -3,3 +3,7 @@ old
 __pycache__
 .DS_Store
 ._*
+build
+dist
+*.egg-info
+out.wav
