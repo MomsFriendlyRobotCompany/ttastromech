@@ -17,7 +17,7 @@ setup(
 	author_email='walchko@users.noreply.github.com',
 	name=PACKAGE_NAME,
 	version=VERSION,
-	description='python library to use the Adafruit NXP 9-Dof IMU',
+	description='python library transform text strings into Astromech (like R2D2) sounds',
 	long_description=open('readme.rst').read(),
 	url='http://github.com/walchko/{}'.format(PACKAGE_NAME),
 	classifiers=[
