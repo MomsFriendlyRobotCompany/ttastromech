@@ -4,10 +4,21 @@ Text to Astromech
 This was originally created by `Hugo SCHOCH <https://github.com/hug33k/PyTalk-R2D2>`_.
 I just packaged it on pypi and use it for an R2D2 project I am working on.
 
+It works by asigning an R2-D2 sound to each letter of the alphabet, then, when you pass
+it a string, it makes sounds like an astromech. Currently it only supports Linux and
+macOS.
+
+========= ================
+OS        Audio Program
+========= ================
+macOS     ``afplay``
+linux     ``play`` from libsox, ``aplay`` from alsa
+========= ================
+
 Install
 ----------
 
-::
+The preferred method of installation is::
 
 	pip install ttastromech
 
@@ -24,7 +35,7 @@ Usage
 		r2 = TTAstromech()
 
 		try:
-			r2.run()  # make random astromech sounds
+			r2.run()  # make random astromech sounds by feeding it random strings of letters
 			time.sleep(2)
 		except KeyboardInterrupt:
 			print('bye ...')
@@ -32,8 +43,9 @@ Usage
 MIT License
 ============
 
-Copyright (c) 2015 SCHOCH Hugo
-Copyright (c) 2017 Kevin J. Walchko
+**Copyright (c) 2015 SCHOCH Hugo**
+
+**Copyright (c) 2017 Kevin J. Walchko**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
