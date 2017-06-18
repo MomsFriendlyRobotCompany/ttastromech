@@ -11,6 +11,7 @@ import time
 import random
 import string
 import platform
+# import tempfile
 
 
 def print_info(f):
@@ -21,6 +22,7 @@ def print_info(f):
 class TTAstromech(object):
 	def __init__(self, path="/sounds"):
 		baseLocation = os.path.dirname(__file__)
+		print('ttastromech is located:', baseLocation)
 		self.root = baseLocation + path + "/{0}.wav"
 		letters = [
 			"a", "b", "c", "c1", "d", "e", "f", "g", "g1", "h", "i", "j", "k",
@@ -79,7 +81,7 @@ class TTAstromech(object):
 			if ltr.isalpha():
 				data += self.db[ltr]
 
-		self.play(data)
+		self._play(data)
 
 	# def pyAud(self, data):
 	# 	p = pyaudio.PyAudio()
@@ -101,7 +103,7 @@ class TTAstromech(object):
 	# 	else:
 	# 		return True
 
-	def play(self, data):
+	def _play(self, data):
 		wf = wave.open("out.wav", 'wb')
 		wf.setnchannels(1)
 		wf.setsampwidth(2)  # 16 bits
