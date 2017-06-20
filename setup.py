@@ -35,6 +35,7 @@ setup(
 	keywords=['r2d2', 'tts', '', 'star wars', 'driod', 'astromech'],
 	packages=[PACKAGE_NAME],
 	install_requires=['build_utils'],
+	include_package_data=True,
 	cmdclass={
 		'make': BuildCommand,
 		'publish': PublishCommand
