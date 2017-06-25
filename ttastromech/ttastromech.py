@@ -33,7 +33,7 @@ class Audio_Player(object):
 					elif play == 'aplay':
 						# -q quiet output
 						# -M mmap audio
-						cmd = 'aplay -q -M {}'
+						cmd = 'aplay -q {}'
 					else:
 						raise Exception('Could not find working audio player')
 					self.audio_player = cmd
