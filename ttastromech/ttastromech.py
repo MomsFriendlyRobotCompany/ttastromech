@@ -14,40 +14,6 @@ import platform
 import tempfile
 
 
-# def print_info(f):
-# 	info = f.getparams()
-# 	print('Wave: {} ch, {} bits @ {} Hz'.format(info[0], info[1] * 8, info[2]))
-#
-# try:
-# 	import pyaudio
-#
-# 	class PyAudioPlayer(object):
-# 		def __init__(self):
-# 			pass
-#
-# 		def play(self, data):
-# 			p = pyaudio.PyAudio()
-# 			stream = p.open(
-# 				format=p.get_format_from_width(2),
-# 				channels=1,
-# 				rate=22050,
-# 				output=True
-# 			)
-#
-# 			stream.write(data)
-# 			p.terminate()
-#
-# except ImportError:
-# 	print('Need to install pyaudio')
-#
-# 	class PyAudioPlayer(object):
-# 		def __init__(self):
-# 			pass
-#
-# 		def play(self, data):
-# 			print('Error: no pyaudio installed')
-
-
 class Audio_Player(object):
 	def __init__(self):
 		plat = platform.system()
@@ -56,7 +22,7 @@ class Audio_Player(object):
 			self.audio_player = 'afplay {}'
 
 		elif plat == 'Linux':
-			for play in ['play', 'aplay']:
+			for play in ['aplay', 'play']:
 				ret = os.system('which {}'.format(play))
 				if ret == 0:
 					cmd = None
@@ -91,10 +57,10 @@ class Audio_Player(object):
 
 
 class TTAstromech(object):
-	def __init__(self, path="/sounds"):
+	def __init__(self):
 		baseLocation = os.path.dirname(__file__)
-		print('ttastromech is located:', baseLocation)
-		self.root = baseLocation + path + "/{0}.wav"
+		# print('ttastromech is located:', baseLocation)
+		self.root = baseLocation + "/sounds/{0}.wav"
 		letters = [
 			"a", "b", "c", "c1", "d", "e", "f", "g", "g1", "h", "i", "j", "k",
 			"l", "m", "n", "o", "o1", "p", "q", "r", "s", "s1", "t", "u", "u1",

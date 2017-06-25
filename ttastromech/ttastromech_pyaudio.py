@@ -1,4 +1,5 @@
 from ttastromech import TTAstromech
+
 try:
 	import pyaudio
 
@@ -19,11 +20,11 @@ try:
 			p.terminate()
 
 except ImportError:
-	print('Need to install pyaudio')
 
 	class TTAstromechPyAudio(TTAstromech):
 		def __init__(self, path="/sounds"):
 			TTAstromech.__init__(self, path)
+			print('<<< Need to install pyaudio >>>')
 
 		def _play(self, data):
 			print('Error: no pyaudio installed')
