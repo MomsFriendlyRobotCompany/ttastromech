@@ -1,6 +1,15 @@
 Text to Astromech
 ========================
 
+.. image:: https://img.shields.io/pypi/l/ttastromech.svg
+	:target: https://github.com/MomsFriendlyRobotCompany/ttastromech
+.. image:: https://img.shields.io/pypi/pyversions/ttastromech.svg
+	:target: https://github.com/MomsFriendlyRobotCompany/ttastromech
+.. image:: https://img.shields.io/pypi/wheel/ttastromech.svg
+	:target: https://github.com/MomsFriendlyRobotCompany/ttastromech
+.. image:: https://img.shields.io/pypi/v/ttastromech.svg
+	:target: https://github.com/MomsFriendlyRobotCompany/ttastromech
+
 This was originally created by `Hugo SCHOCH <https://github.com/hug33k/PyTalk-R2D2>`_.
 I just packaged it on pypi and use it for an R2D2 project I am working on.
 
