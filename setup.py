@@ -39,5 +39,8 @@ setup(
 	cmdclass={
 		'make': BuildCommand,
 		'publish': PublishCommand
-	}
+	},
+	scripts=[
+		'bin/astromech-speak.py',
+	]
 )

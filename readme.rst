@@ -50,6 +50,10 @@ Usage
 		except KeyboardInterrupt:
 			print('bye ...')
 
+Or::
+
+	astromech.py "my god, its full of stars ... oh wait, the wrong movie"
+
 MIT License
 ============
 
