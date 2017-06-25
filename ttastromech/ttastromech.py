@@ -23,7 +23,8 @@ class Audio_Player(object):
 
 		elif plat == 'Linux':
 			for play in ['aplay', 'play']:
-				ret = os.system('which {}'.format(play))
+				# ret = os.system('which {}'.format(play))
+				ret = Popen('which {}'.format(play), shell=True).wait()
 				if ret == 0:
 					cmd = None
 					if play == 'play':
