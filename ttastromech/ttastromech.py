@@ -7,16 +7,87 @@ import wave
 import os
 from subprocess import Popen
 # import audioop  # rms audio
-import time
+# import time
 import random
 import string
 import platform
-# import tempfile
+import tempfile
 
 
-def print_info(f):
-	info = f.getparams()
-	print('Wave: {} ch, {} bits @ {} Hz'.format(info[0], info[1] * 8, info[2]))
+# def print_info(f):
+# 	info = f.getparams()
+# 	print('Wave: {} ch, {} bits @ {} Hz'.format(info[0], info[1] * 8, info[2]))
+#
+# try:
+# 	import pyaudio
+#
+# 	class PyAudioPlayer(object):
+# 		def __init__(self):
+# 			pass
+#
+# 		def play(self, data):
+# 			p = pyaudio.PyAudio()
+# 			stream = p.open(
+# 				format=p.get_format_from_width(2),
+# 				channels=1,
+# 				rate=22050,
+# 				output=True
+# 			)
+#
+# 			stream.write(data)
+# 			p.terminate()
+#
+# except ImportError:
+# 	print('Need to install pyaudio')
+#
+# 	class PyAudioPlayer(object):
+# 		def __init__(self):
+# 			pass
+#
+# 		def play(self, data):
+# 			print('Error: no pyaudio installed')
+
+
+class Audio_Player(object):
+	def __init__(self):
+		plat = platform.system()
+		if plat == 'Darwin':
+			# self.audio_player = 'afplay out.wav'
+			self.audio_player = 'afplay {}'
+
+		elif plat == 'Linux':
+			for play in ['play', 'aplay']:
+				ret = os.system('which {}'.format(play))
+				if ret == 0:
+					cmd = None
+					if play == 'play':
+						# -q quiet output
+						# -V1 only print failure messages
+						cmd = 'play -q -V1 {}'
+					elif play == 'aplay':
+						# -q quiet output
+						# -M mmap audio
+						cmd = 'aplay -q -M {}'
+					else:
+						raise Exception('Could not find working audio player')
+					self.audio_player = cmd
+					break
+
+		else:
+			raise Exception('OS is unsupported')
+
+	def play(self, data):
+		temp = tempfile.NamedTemporaryFile()
+		# wf = wave.open("out.wav", 'wb')
+		wf = wave.open(temp.name, 'wb')
+		wf.setnchannels(1)  # mono
+		wf.setsampwidth(2)  # 16 bits
+		wf.setframerate(22050)  # Hz
+		wf.writeframes(data)
+		wf.close()
+
+		Popen(self.audio_player.format(temp.name), shell=True).wait()
+		temp.close()
 
 
 class TTAstromech(object):
@@ -30,20 +101,7 @@ class TTAstromech(object):
 			"v", "w", "x", "y", "z"
 		]
 
-		plat = platform.system()
-		if plat == 'Darwin':
-			self.audio_player = 'afplay'
-
-		elif plat == 'Linux':
-			# self.audio_player = 'play'
-			for play in ['play', 'aplay']:
-				ret = os.system('which {}'.format(play))
-				if ret == 0:
-					self.audio_player = play
-					break
-
-		else:
-			raise Exception('OS is unsupported')
+		self.audio_player = Audio_Player()
 
 		self.db = {}
 		for key in letters:
@@ -81,19 +139,8 @@ class TTAstromech(object):
 			if ltr.isalpha():
 				data += self.db[ltr]
 
-		self._play(data)
-
-	# def pyAud(self, data):
-	# 	p = pyaudio.PyAudio()
-	# 	stream = p.open(
-	# 		format=p.get_format_from_width(2),
-	# 		channels=1,
-	# 		rate=22050,
-	# 		output=True
-	# 	)
-	#
-	# 	stream.write(data)
-	# 	p.terminate()
+		# self._play(data)
+		self.audio_player.play(data)
 
 	# def checkVolume(self, data, threshold=20):
 	# 	rms = audioop.rms(data)
@@ -103,16 +150,12 @@ class TTAstromech(object):
 	# 	else:
 	# 		return True
 
-	def _play(self, data):
-		wf = wave.open("out.wav", 'wb')
-		wf.setnchannels(1)
-		wf.setsampwidth(2)  # 16 bits
-		wf.setframerate(22050)
-		wf.writeframes(data)
-		wf.close()
-
-		# set
-		# -q quiet output
-		# -V1 only print failure messages
-		# os.system('play -q -V1 out.wav')
-		Popen('{} -q -V1 out.wav'.format(self.audio_player), shell=True).wait()
+	# def _play(self, data):
+	# 	wf = wave.open("out.wav", 'wb')
+	# 	wf.setnchannels(1)
+	# 	wf.setsampwidth(2)  # 16 bits
+	# 	wf.setframerate(22050)
+	# 	wf.writeframes(data)
+	# 	wf.close()
+	#
+	# 	Popen(self.audio_player, shell=True).wait()

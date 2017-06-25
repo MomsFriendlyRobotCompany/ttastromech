@@ -4,7 +4,7 @@ Text to Astromech
 This was originally created by `Hugo SCHOCH <https://github.com/hug33k/PyTalk-R2D2>`_.
 I just packaged it on pypi and use it for an R2D2 project I am working on.
 
-It works by asigning an R2-D2 sound to each letter of the alphabet, then, when you pass
+It works by assigning an R2-D2 sound to each letter of the alphabet, then, when you pass
 it a string, it makes sounds like an astromech. Currently it only supports Linux and
 macOS.
 
@@ -12,7 +12,8 @@ macOS.
 OS        Audio Program
 ========= ================
 macOS     ``afplay``
-linux     ``play`` from libsox, ``aplay`` from alsa
+linux     ``play`` from libsox
+linux     ``aplay`` from alsa
 ========= ================
 
 Install
