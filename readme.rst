@@ -1,4 +1,4 @@
-.. image:: docs/pics/r2.gif
+.. image:: https://raw.githubusercontent.com/MomsFriendlyRobotCompany/ttastromech/master/docs/pics/r2.gif
 	:target: https://github.com/MomsFriendlyRobotCompany/ttastromech
 
 Text to Astromech
