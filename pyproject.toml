@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "ttastromech"
+version = "0.5.0"
+description = "python library transform text strings into Astromech (like R2D2) sounds"
+authors = ["walchko <walchko@users.noreply.github.com>"]
+readme = "readme.rst"
+license = "MIT"
+homepage = "https://pypi.org/project/ttastromech/"
+repository = 'http://github.com/MomsFriendlyRobotCompany/ttastromech'
+# documentation = "http://..."
+keywords = ['r2d2', 'tts', 'star wars', 'driod', 'astromech']
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Software Development :: Libraries',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Software Development :: Libraries :: Application Frameworks'
+]
+
+[tool.poetry.scripts]
+astromechspeak = "ttastromech.bin.astromechspeak:main"
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+importlib-metadata = {version="*", python="<3.8"}
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
