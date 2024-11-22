@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ttastromech"
-version = "0.6.0"
+version = "0.6.1"
 description = "python library transform text strings into Astromech (like R2D2) sounds"
 authors = ["walchko <walchko@users.noreply.github.com>"]
 readme = "readme.rst"
@@ -8,7 +8,7 @@ license = "MIT"
 homepage = "https://pypi.org/project/ttastromech/"
 repository = 'http://github.com/MomsFriendlyRobotCompany/ttastromech'
 # documentation = "http://..."
-keywords = ['r2d2', 'tts', 'star wars', 'driod', 'astromech']
+keywords = ['r2d2', 'tts', 'star wars', 'droid', 'astromech']
 classifiers = [
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
