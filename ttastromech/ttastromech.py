@@ -26,6 +26,7 @@ class AudioPlayer:
 
         elif plat == 'Linux':
             for play in ['aplay', 'play']:
+                # TODO: research/consider paplay , ffplay , and mplayer as well?
                 # ret = os.system('which {}'.format(play))
                 ret = Popen('which {}'.format(play), shell=True).wait()
                 if ret == 0:
@@ -43,6 +44,8 @@ class AudioPlayer:
                     self.audio_player = cmd
                     break
 
+                #TODO: plat == 'Windows':
+                #use start, but only after cd to file dir
         else:
             raise Exception('OS is unsupported')
 
@@ -85,12 +88,12 @@ class TTAstromech:
         """Pull the audio data off of disk corresponding to the syllable."""
         audio_data = b""
 
-        for letter in syllable:
-            letter = letter.lower()  # need this?
-            if not letter.isalpha():
-                continue
+        if not syllable.isalnum():
+            print("skipping unsupported syllable/letter" + syllable)
+        else:
+            syllable = syllable.lower()  # need this?
             try:
-                wav_file = wave.open(self.root.format(letter), "rb")
+                wav_file = wave.open(self.root.format(syllable), "rb")
                 audio_data += wav_file.readframes(wav_file.getnframes())
                 wav_file.close()
             except Exception as fs_ex:
@@ -114,10 +117,12 @@ class TTAstromech:
         and invoke the audio render."""
         data = b""
         previous_ltr= b""
+        double_letters = [letter[0] for letter in self.syllabary if '1' in letter]
         for ltr in phrase:
             if ltr.isalpha():
-                if ltr == previous_ltr and ltr in ['c','g','o','u','s']:
+                if ltr == previous_ltr and ltr in double_letters:
                     data += self.syllabary[ltr+"1"]
+                    #print("Double-letter syllable invoked")
                 else:
                     data += self.syllabary[ltr]
                 previous_ltr = ltr
