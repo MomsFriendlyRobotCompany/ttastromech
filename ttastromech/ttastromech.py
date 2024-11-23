@@ -1,5 +1,10 @@
+#!/usr/local/bin/python
+"""A simple, for-fun Text-to-Speech-like renderer
+intended to seem like an authentic interaction with
+a certain beloved autonomous robotic entity.
+"""
+
 import wave
-# import pyaudio
 # import sys
 import os
 from subprocess import Popen
@@ -11,7 +16,8 @@ import platform
 import tempfile
 
 
-class Audio_Player(object):
+class AudioPlayer:
+    """Limited cross-platform playing of the rendered wav audio."""
     def __init__(self):
         plat = platform.system()
         if plat == 'Darwin':
@@ -41,85 +47,99 @@ class Audio_Player(object):
             raise Exception('OS is unsupported')
 
     def play(self, data):
+        """Attempt audible playing of pre-rendered wav file in storage."""
         temp = tempfile.NamedTemporaryFile()
-        # wf = wave.open("out.wav", 'wb')
-        wf = wave.open(temp.name, 'wb')
-        wf.setnchannels(1)  # mono
-        wf.setsampwidth(2)  # 16 bits
-        wf.setframerate(22050)  # Hz
-        wf.writeframes(data)
-        wf.close()
+        wav_file = wave.open(temp.name, 'wb')
+        wav_file.setnchannels(1)  # mono
+        wav_file.setsampwidth(2)  # 16 bits
+        wav_file.setframerate(22050)  # Hz
+        wav_file.writeframes(data)
+        wav_file.close()
 
         Popen(self.audio_player.format(temp.name), shell=True).wait()
         temp.close()
 
 
-class TTAstromech(object):
+class TTAstromech:
+    """Interface and 'language' programming."""
     def __init__(self):
-        baseLocation = os.path.dirname(__file__)
-        # print('ttastromech is located:', baseLocation)
-        self.root = baseLocation + "/sounds/{0}.wav"
+        base_location = os.path.dirname(__file__)
+        # print('ttastromech is located:', base_location)
+        self.root = base_location + "/sounds/{0}.wav"
         letters = [
             "a", "b", "c", "c1", "d", "e", "f", "g", "g1", "h", "i", "j", "k",
             "l", "m", "n", "o", "o1", "p", "q", "r", "s", "s1", "t", "u", "u1",
             "v", "w", "x", "y", "z"
         ]
 
-        self.audio_player = Audio_Player()
+        self.audio_player = AudioPlayer()
 
-        self.db = {}
+        # At startup, pregenerate the syllabary in memory
+        # with the audio data for later quick render.
+        self.syllabary = {}
         for key in letters:
             data = self.generate(key)
-            self.db[key] = data
+            self.syllabary[key] = data
 
-    def generate(self, word):
-        data = b""
+    def generate(self, syllable):
+        """Pull the audio data off of disk corresponding to the syllable."""
+        audio_data = b""
 
-        for letter in word:
+        for letter in syllable:
             letter = letter.lower()  # need this?
             if not letter.isalpha():
                 continue
             try:
-                f = wave.open(self.root.format(letter), "rb")
-                data += f.readframes(f.getnframes())
-                f.close()
-            except Exception as e:
-                print(e)
-        return data
+                wav_file = wave.open(self.root.format(letter), "rb")
+                audio_data += wav_file.readframes(wav_file.getnframes())
+                wav_file.close()
+            except Exception as fs_ex:
+                print(fs_ex)
+        return audio_data
 
     def run(self):
+        """Demo, quick test only. Infinite loop."""
         while True:
             word = self.getnrandom()
             print('phrase:', word)
             self.speak(word)
 
     def getnrandom(self, n=6):
+        """Quick and dirty random letter set for effect."""
         char_set = string.ascii_lowercase
         return ''.join(random.sample(char_set, n))
 
     def speak(self, phrase):
+        """Concatenate wave audio data corresponding to input
+        and invoke the audio render."""
         data = b""
+        previous_ltr= b""
         for ltr in phrase:
             if ltr.isalpha():
-                data += self.db[ltr]
-
-        # self._play(data)
+                if ltr == previous_ltr and ltr in ['c','g','o','u','s']:
+                    data += self.syllabary[ltr+"1"]
+                else:
+                    data += self.syllabary[ltr]
+                previous_ltr = ltr
+        #TODO: split this into a render and play,
+        #make render a public (for cases where you want to ship it out)
         self.audio_player.play(data)
+
 
     # def checkVolume(self, data, threshold=20):
     #     rms = audioop.rms(data)
-    #     # db = 20*log10(rms)
+    #     # syllabary = 20*log10(rms)
     #     if threshold > rms:
     #         return False
     #     else:
     #         return True
 
     # def _play(self, data):
-    #     wf = wave.open("out.wav", 'wb')
-    #     wf.setnchannels(1)
-    #     wf.setsampwidth(2)  # 16 bits
-    #     wf.setframerate(22050)
-    #     wf.writeframes(data)
-    #     wf.close()
+    #     wav_file = wave.open("out.wav", 'wb')
+    #     wav_file.setnchannels(1)
+    #     wav_file.setsampwidth(2)  # 16 bits
+    #     wav_file.setframerate(22050)
+    #     wav_file.writeframes(data)
+    #     wav_file.close()
     #
     #     Popen(self.audio_player, shell=True).wait()
